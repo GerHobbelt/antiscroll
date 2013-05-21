@@ -58,10 +58,16 @@
    */
 
   Antiscroll.prototype.refresh = function() {
-    var needHScroll = this.options.forceHorizontal ||
-                      this.inner.get(0).scrollWidth > this.el.width() + (this.y ? scrollbarSize() : 0)
-      , needVScroll = this.options.forceVertical ||
-                      this.inner.get(0).scrollHeight > this.el.height() + (this.x ? scrollbarSize() : 0);
+    var needHScroll = this.options.disableHorizontal !== true &&
+                      (
+                        this.options.forceHorizontal ||
+                        this.inner.get(0).scrollWidth > this.el.width() + (this.y ? scrollbarSize() : 0)
+                      )
+      , needVScroll = this.options.disableVertical !== true &&
+                      (
+                        this.options.forceVertical ||
+                        this.inner.get(0).scrollHeight > this.el.height() + (this.x ? scrollbarSize() : 0)
+                      );
 
     if (this.x) {
       if (!this.horizontal && needHScroll) {
