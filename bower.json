@@ -1,0 +1,10 @@
+{
+  "name": "idx-antiscroll",
+  "version": "0.1.0",
+  "main": "antiscroll.js",
+  "license": "MIT",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ]
+}
