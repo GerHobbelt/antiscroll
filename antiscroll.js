@@ -39,7 +39,7 @@
 
     this.inner = this.el.find('.antiscroll-inner');
     this.inner.css({
-        'width':  '+=' + (this.y ? scrollbarSize() : 0)
+        'width':  this.el.width() + (this.y ? scrollbarSize() : 0)
       , 'height': '+=' + (this.x ? scrollbarSize() : 0)
     });
 
