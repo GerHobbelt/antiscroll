@@ -34,12 +34,14 @@
    *
    *   - autoHide           {boolean}  (default: true) auto-hide the scrollbars when mouse moves outside area
    *   - initialDisplay     {number/boolean}   (default: 3000) number of milliseconds for the initial display period when the scrollbar is created. Set to boolean `false` to display the initial display period entirely.
-   *   - disableHorizontal  {boolean}  do not show a horizontal scroll bar, ever!
-   *   - disableVertical    {boolean}  do not show a vertical scroll bar, ever!
-   *   - forceHorizontal    {boolean}  always show a horizontal scroll bar (this option is overridden by the `disableHorizontal` option though)
-   *   - forceVertical      {boolean}  always show a vertical scroll bar (this option is overridden by the `disableVertical` option though)
-   *   - x                  {boolean}  (default: true) show a horizontal scroll bar (this option is overridden by both the `forceHorizontal` and `disableHorizontal` options though)
-   *   - y                  {boolean}  (default: true) show a vertical scroll bar (this option is overridden by both the `forceVertical` and `disableVertical` options though)
+   *   - x                  {boolean}  (default: null) set the horizontal scrollbar visibility:
+   *                                   + `true`: always *show* the scroll bar, i.e. *force* the scrollbar
+   *                                   + `false`: always *hide* the scroll bar, i.e. *disable* the scrollbar
+   *                                   + `null` / `undefined`: let the system decide, based on the DOM measurements, i.e. set to the scrollbar to *automatic*
+   *   - y                  {boolean}  (default: null) set the vertical scrollbar visibility:
+   *                                   + `true`: always *show* the scroll bar, i.e. *force* the scrollbar
+   *                                   + `false`: always *hide* the scroll bar, i.e. *disable* the scrollbar
+   *                                   + `null` / `undefined`: let the system decide, based on the DOM measurements, i.e. set to the scrollbar to *automatic*
    *   - padding            {number}   (default: 2) the scrollbar track padding
    */
 
@@ -47,8 +49,8 @@
     this.el = $(el);
     this.options = opts || {};
 
-    this.x = (false !== this.options.x) || this.options.forceHorizontal;
-    this.y = (false !== this.options.y) || this.options.forceVertical;
+    this.x = this.options.x;
+    this.y = this.options.y;
     this.autoHide = false !== this.options.autoHide;
     this.padding = (undefined == this.options.padding ? 2 : this.options.padding);          // jshint ignore:line
 
@@ -56,8 +58,8 @@
     // as long as you initialize Antiscroll contexts from inner towards outer DOM.
     this.inner = this.el.find('.antiscroll-inner').filter(':not(.antiscroll-instance)').filter(":first");
     this.inner.css({
-        'width':  '+=' + (this.y ? scrollbarSize() : 0),
-        'height': '+=' + (this.x ? scrollbarSize() : 0)
+        'width':  '+=' + (this.y !== false ? scrollbarSize() : 0),
+        'height': '+=' + (this.x !== false ? scrollbarSize() : 0)
     })
     .addClass('antiscroll-instance');
 
@@ -71,37 +73,31 @@
    */
 
   Antiscroll.prototype.refresh = function () {
-    var needHScroll = !this.options.disableHorizontal &&
-                      (
-                        this.options.forceHorizontal ||
-                        (this.inner.length > 0 ? this.inner.get(0).scrollWidth : 0) > this.el.width() + (this.y ? scrollbarSize() : 0)
+    var needHScroll = (this.options.x != null ?                                             // jshint ignore:line
+                        this.options.x :
+                        (this.inner.length > 0 ? this.inner.get(0).scrollWidth : 0) > this.el.width() + scrollbarSize()
                       ),
-        needVScroll = !this.options.disableVertical &&
-                      (
-                        this.options.forceVertical ||
-                        (this.inner.length > 0 ? this.inner.get(0).scrollHeight : 0) > this.el.height() + (this.x ? scrollbarSize() : 0)
+        needVScroll = (this.options.y != null ?                                             // jshint ignore:line
+                        this.options.y :
+                        (this.inner.length > 0 ? this.inner.get(0).scrollHeight : 0) > this.el.height() + scrollbarSize()
                       );
 
-    if (this.x) {
-      if (!this.horizontal && needHScroll) {
-        this.horizontal = new Antiscroll.Scrollbar.Horizontal(this);
-      } else if (this.horizontal && !needHScroll)  {
-        this.horizontal.destroy();
-        this.horizontal = null;
-      } else if (this.horizontal) {
-        this.horizontal.update();
-      }
+    if (!this.horizontal && needHScroll) {
+      this.horizontal = new Antiscroll.Scrollbar.Horizontal(this);
+    } else if (this.horizontal && !needHScroll)  {
+      this.horizontal.destroy();
+      this.horizontal = null;
+    } else if (this.horizontal) {
+      this.horizontal.update();
     }
 
-    if (this.y) {
-      if (!this.vertical && needVScroll) {
-        this.vertical = new Antiscroll.Scrollbar.Vertical(this);
-      } else if (this.vertical && !needVScroll)  {
-        this.vertical.destroy();
-        this.vertical = null;
-      } else if (this.vertical) {
-        this.vertical.update();
-      }
+    if (!this.vertical && needVScroll) {
+      this.vertical = new Antiscroll.Scrollbar.Vertical(this);
+    } else if (this.vertical && !needVScroll)  {
+      this.vertical.destroy();
+      this.vertical = null;
+    } else if (this.vertical) {
+      this.vertical.update();
     }
   };
 
