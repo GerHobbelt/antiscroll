@@ -39,12 +39,16 @@
     this.autoHide = false !== this.options.autoHide;
     this.padding = undefined == this.options.padding ? 2 : this.options.padding;
 
-    // Select only direct children: it allows nesting antiscroll contexts
-    this.inner = this.el.find('> .antiscroll-inner');
+    // Select only semi-direct children: it allows nesting antiscroll contexts
+    // as long as you initialize Antiscroll contexts from inner towards outer DOM.
+    this.inner = this.el.find('.antiscroll-inner').filter(function (i, el) {
+      return !$(el).parent().hasClass('antiscroll-container');
+    });
     this.inner.css({
         'width':  '+=' + (this.y ? scrollbarSize() : 0)
       , 'height': '+=' + (this.x ? scrollbarSize() : 0)
-    });
+    })
+    .parent().addClass('antiscroll-container');
 
     this.refresh();
   };
@@ -90,6 +94,8 @@
    */
 
   Antiscroll.prototype.destroy = function () {
+    this.inner.parent().removeClass('antiscroll-container');
+
     if (this.horizontal) {
       this.horizontal.destroy();
       this.horizontal = null
