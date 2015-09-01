@@ -42,6 +42,15 @@
 
 .antiscroll-inner {
   overflow: scroll;
+  /*
+   * IE10+ scrollbars won't scroll completely unless scrollbar hidden
+   *
+   * `-ms-overflow-style: none` - Indicates the element does not display scrollbars or panning indicators, 
+   * even when its content overflows.
+   *
+   * Without this, antiscroll can't be scrolled where the scrollbar usually is, thereby cutting off 
+   * the content.
+   */
   -ms-overflow-style: none;
 }
 

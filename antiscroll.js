@@ -39,6 +39,7 @@
     this.autoHide = false !== this.options.autoHide;
     this.padding = undefined == this.options.padding ? 2 : this.options.padding;
 
+    // Select only direct children: it allows nesting antiscroll contexts
     this.inner = this.el.find('> .antiscroll-inner');
     this.inner.css({
         'width':  '+=' + (this.y ? scrollbarSize() : 0)
