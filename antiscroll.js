@@ -109,7 +109,12 @@
    */
 
   Antiscroll.prototype.destroy = function () {
-    this.inner.removeClass('antiscroll-instance');
+    this.inner
+    .css({
+        'width':  '',
+        'height': ''
+    })
+    .removeClass('antiscroll-instance');
 
     if (this.horizontal) {
       this.horizontal.destroy();
@@ -131,7 +136,6 @@
 
   Antiscroll.prototype.rebuild = function () {
     this.destroy();
-    this.inner.attr('style', '');
     Antiscroll.call(this, this.el, this.options);
     return this;
   };
