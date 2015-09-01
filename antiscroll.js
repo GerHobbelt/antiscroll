@@ -56,7 +56,7 @@
 
     // Select only semi-direct children: it allows nesting antiscroll contexts
     // as long as you initialize Antiscroll contexts from inner towards outer DOM.
-    this.inner = this.el.find('.antiscroll-inner').filter(':not(.antiscroll-instance)').filter(":first");
+    this.inner = this.el.find('.antiscroll-inner').filter(':not(.antiscroll-instance)').filter(':first');
     this.inner.css({
         'width':  '+=' + (this.y !== false ? scrollbarSize() : 0),
         'height': '+=' + (this.x !== false ? scrollbarSize() : 0)
