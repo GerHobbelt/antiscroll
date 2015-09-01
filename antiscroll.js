@@ -129,14 +129,15 @@
 
   /**
    * Rebuild Antiscroll.
+   * Optionally specify a new set of options.
    *
    * @return {Antiscroll} for chaining
    * @api public
    */
 
-  Antiscroll.prototype.rebuild = function () {
+  Antiscroll.prototype.rebuild = function (newOptions) {
     this.destroy();
-    Antiscroll.call(this, this.el, this.options);
+    Antiscroll.call(this, this.el, newOptions || this.options);
     return this;
   };
 
