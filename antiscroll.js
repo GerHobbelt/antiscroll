@@ -37,7 +37,7 @@
     this.x = (false !== this.options.x) || this.options.forceHorizontal;
     this.y = (false !== this.options.y) || this.options.forceVertical;
     this.autoHide = false !== this.options.autoHide;
-    this.padding = undefined == this.options.padding ? 2 : this.options.padding;
+    this.padding = (undefined == this.options.padding ? 2 : this.options.padding);
 
     // Select only semi-direct children: it allows nesting antiscroll contexts
     // as long as you initialize Antiscroll contexts from inner towards outer DOM.
@@ -49,7 +49,7 @@
     .addClass('antiscroll-instance');
 
     this.refresh();
-  };
+  }
 
   /**
    * refresh scrollbars
@@ -96,11 +96,11 @@
 
     if (this.horizontal) {
       this.horizontal.destroy();
-      this.horizontal = null
+      this.horizontal = null;
     }
     if (this.vertical) {
       this.vertical.destroy();
-      this.vertical = null
+      this.vertical = null;
     }
     return this;
   };
@@ -159,7 +159,7 @@
           this.hiding = setTimeout($.proxy(this, 'hide'), parseInt(initialDisplay, 10) || 3000);
       }
     }
-  };
+  }
 
   /**
    * Cleans up.
@@ -242,8 +242,8 @@
     this.el[0].ownerDocument.onselectstart = function () { return false; };
 
     var pane = this.pane,
-	    move = $.proxy(this, 'mousemove'),
-		self = this
+	      move = $.proxy(this, 'mousemove'),
+		    self = this;
 
     $(this.el[0].ownerDocument)
       .mousemove(move)
@@ -315,8 +315,8 @@
 
   Scrollbar.Horizontal.prototype.update = function () {
     var paneWidth = this.pane.el.width(), 
-	    trackWidth = paneWidth - this.pane.padding * 2,
-		innerEl = this.pane.inner.get(0)
+	      trackWidth = paneWidth - this.pane.padding * 2,
+		    innerEl = this.pane.inner.get(0);
 
     this.el
       .css('width', trackWidth * paneWidth / innerEl.scrollWidth)
@@ -334,8 +334,8 @@
   Scrollbar.Horizontal.prototype.mousemove = function (ev) {
     var trackWidth = this.pane.el.width() - this.pane.padding * 2, 
 	    pos = ev.pageX - this.startPageX,
-		barWidth = this.el.width(),
-		innerEl = this.pane.inner.get(0)
+		  barWidth = this.el.width(),
+		  innerEl = this.pane.inner.get(0);
 
     // minimum top is 0, maximum is the track height
     var y = Math.min(Math.max(pos, 0), trackWidth - barWidth);
@@ -351,9 +351,9 @@
    */
 
   Scrollbar.Horizontal.prototype.mousewheel = function (ev, delta, x, y) {
-    if ((x < 0 && 0 == this.pane.inner.get(0).scrollLeft) ||
+    if ((x < 0 && 0 === this.pane.inner.get(0).scrollLeft) ||
         (x > 0 && (this.innerEl.scrollLeft + Math.ceil(this.pane.el.width())
-          == this.innerEl.scrollWidth))) {
+          === this.innerEl.scrollWidth))) {
       ev.preventDefault();
       return false;
     }
@@ -384,15 +384,15 @@
 
   Scrollbar.Vertical.prototype.update = function () {
     var paneHeight = this.pane.el.height(), 
-	    trackHeight = paneHeight - this.pane.padding * 2,
-		innerEl = this.innerEl;
+	      trackHeight = paneHeight - this.pane.padding * 2,
+		    innerEl = this.innerEl;
       
     var scrollbarHeight = trackHeight * paneHeight / innerEl.scrollHeight;
     scrollbarHeight = scrollbarHeight < 20 ? 20 : scrollbarHeight;
     
     var topPos = trackHeight * innerEl.scrollTop / innerEl.scrollHeight;
     
-    if((topPos + scrollbarHeight) > trackHeight) {
+    if ((topPos + scrollbarHeight) > trackHeight) {
         var diff = (topPos + scrollbarHeight) - trackHeight;
         topPos = topPos - diff - 3;
     }
@@ -412,10 +412,10 @@
 
   Scrollbar.Vertical.prototype.mousemove = function (ev) {
     var paneHeight = this.pane.el.height(),
-	    trackHeight = paneHeight - this.pane.padding * 2,
-		pos = ev.pageY - this.startPageY,
-		barHeight = this.el.height(),
-		innerEl = this.innerEl
+	      trackHeight = paneHeight - this.pane.padding * 2,
+  		  pos = ev.pageY - this.startPageY,
+  		  barHeight = this.el.height(),
+  		  innerEl = this.innerEl;
 
     // minimum top is 0, maximum is the track height
     var y = Math.min(Math.max(pos, 0), trackHeight - barHeight);
@@ -431,9 +431,9 @@
    */
 
   Scrollbar.Vertical.prototype.mousewheel = function (ev, delta, x, y) {
-    if ((y > 0 && 0 == this.innerEl.scrollTop) ||
+    if ((y > 0 && 0 === this.innerEl.scrollTop) ||
         (y < 0 && (this.innerEl.scrollTop + Math.ceil(this.pane.el.height())
-          == this.innerEl.scrollHeight))) {
+          === this.innerEl.scrollHeight))) {
       ev.preventDefault();
       return false;
     }
@@ -448,10 +448,10 @@
    */
 
   function inherits (ctorA, ctorB) {
-    function f() {};
+    function f() {}
     f.prototype = ctorB.prototype;
-    ctorA.prototype = new f;
-  };
+    ctorA.prototype = new f();
+  }
 
   /**
    * Scrollbar size detection.
@@ -461,21 +461,21 @@
 
   function scrollbarSize () {
     if (size === undefined) {
-      var div = $(
+      var $div = $(
           '<div class="antiscroll-inner" style="width:50px;height:50px;overflow-y:scroll;'
         + 'position:absolute;top:-200px;left:-200px;"><div style="height:100px;width:100%"/>'
         + '</div>'
       );
 
-      $('body').append(div);
-      var w1 = $(div).innerWidth();
-      var w2 = $('div', div).innerWidth();
-      $(div).remove();
+      $('body').append($div);
+      var w1 = $div.innerWidth();
+      var w2 = $('div', $div).innerWidth();
+      $div.remove();
 
       size = w1 - w2;
     }
 
     return size;
-  };
+  }
 
 })(jQuery);
