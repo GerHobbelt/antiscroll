@@ -30,21 +30,21 @@
    * @api public
    */
 
-  function Antiscroll (el, opts) {
+  function Antiscroll(el, opts) {
     this.el = $(el);
     this.options = opts || {};
 
     this.x = (false !== this.options.x) || this.options.forceHorizontal;
     this.y = (false !== this.options.y) || this.options.forceVertical;
     this.autoHide = false !== this.options.autoHide;
-    this.padding = (undefined == this.options.padding ? 2 : this.options.padding);
+    this.padding = (undefined == this.options.padding ? 2 : this.options.padding);          // jshint ignore:line
 
     // Select only semi-direct children: it allows nesting antiscroll contexts
     // as long as you initialize Antiscroll contexts from inner towards outer DOM.
     this.inner = this.el.find('.antiscroll-inner').filter(':not(.antiscroll-instance)').filter(":first");
     this.inner.css({
-        'width':  '+=' + (this.y ? scrollbarSize() : 0)
-      , 'height': '+=' + (this.x ? scrollbarSize() : 0)
+        'width':  '+=' + (this.y ? scrollbarSize() : 0),
+        'height': '+=' + (this.x ? scrollbarSize() : 0)
     })
     .addClass('antiscroll-instance');
 
@@ -57,9 +57,9 @@
    * @api public
    */
 
-  Antiscroll.prototype.refresh = function() {
+  Antiscroll.prototype.refresh = function () {
     var needHScroll = (this.inner.length > 0 ? this.inner.get(0).scrollWidth : 0) > this.el.width() + (this.y ? scrollbarSize() : 0), 
-	      needVScroll = (this.inner.length > 0 ? this.inner.get(0).scrollHeight : 0) > this.el.height() + (this.x ? scrollbarSize() : 0);
+        needVScroll = (this.inner.length > 0 ? this.inner.get(0).scrollHeight : 0) > this.el.height() + (this.x ? scrollbarSize() : 0);
 
     if (this.x) {
       if (!this.horizontal && needHScroll) {
@@ -126,7 +126,7 @@
    * @api public
    */
 
-  function Scrollbar (pane) {
+  function Scrollbar(pane) {
     this.pane = pane;
     this.pane.el.append(this.el);
     this.innerEl = this.pane.inner.get(0);
@@ -239,11 +239,13 @@
     this.startPageX = ev.pageX - parseInt(this.el.css('left'), 10);
 
     // prevent crazy selections on IE
-    this.el[0].ownerDocument.onselectstart = function () { return false; };
+    this.el[0].ownerDocument.onselectstart = function () { 
+      return false; 
+    };
 
     var pane = this.pane,
-	      move = $.proxy(this, 'mousemove'),
-		    self = this;
+        move = $.proxy(this, 'mousemove'),
+        self = this;
 
     $(this.el[0].ownerDocument)
       .mousemove(move)
@@ -315,8 +317,8 @@
 
   Scrollbar.Horizontal.prototype.update = function () {
     var paneWidth = this.pane.el.width(), 
-	      trackWidth = paneWidth - this.pane.padding * 2,
-		    innerEl = this.pane.inner.get(0);
+        trackWidth = paneWidth - this.pane.padding * 2,
+        innerEl = this.pane.inner.get(0);
 
     this.el
       .css('width', trackWidth * paneWidth / innerEl.scrollWidth)
@@ -333,15 +335,14 @@
 
   Scrollbar.Horizontal.prototype.mousemove = function (ev) {
     var trackWidth = this.pane.el.width() - this.pane.padding * 2, 
-	    pos = ev.pageX - this.startPageX,
-		  barWidth = this.el.width(),
-		  innerEl = this.pane.inner.get(0);
+      pos = ev.pageX - this.startPageX,
+      barWidth = this.el.width(),
+      innerEl = this.pane.inner.get(0);
 
     // minimum top is 0, maximum is the track height
     var y = Math.min(Math.max(pos, 0), trackWidth - barWidth);
 
-    innerEl.scrollLeft = (innerEl.scrollWidth - this.pane.el.width())
-      * y / (trackWidth - barWidth);
+    innerEl.scrollLeft = (innerEl.scrollWidth - this.pane.el.width()) * y / (trackWidth - barWidth);
   };
 
   /**
@@ -352,8 +353,7 @@
 
   Scrollbar.Horizontal.prototype.mousewheel = function (ev, delta, x, y) {
     if ((x < 0 && 0 === this.pane.inner.get(0).scrollLeft) ||
-        (x > 0 && (this.innerEl.scrollLeft + Math.ceil(this.pane.el.width())
-          === this.innerEl.scrollWidth))) {
+        (x > 0 && (this.innerEl.scrollLeft + Math.ceil(this.pane.el.width()) === this.innerEl.scrollWidth))) {
       ev.preventDefault();
       return false;
     }
@@ -384,8 +384,8 @@
 
   Scrollbar.Vertical.prototype.update = function () {
     var paneHeight = this.pane.el.height(), 
-	      trackHeight = paneHeight - this.pane.padding * 2,
-		    innerEl = this.innerEl;
+        trackHeight = paneHeight - this.pane.padding * 2,
+        innerEl = this.innerEl;
       
     var scrollbarHeight = trackHeight * paneHeight / innerEl.scrollHeight;
     scrollbarHeight = scrollbarHeight < 20 ? 20 : scrollbarHeight;
@@ -400,8 +400,8 @@
     this.el
       .css('height', scrollbarHeight)
       .css('top', topPos);
-	  
-	  return paneHeight < innerEl.scrollHeight;
+    
+    return paneHeight < innerEl.scrollHeight;
   };
 
   /**
@@ -412,16 +412,15 @@
 
   Scrollbar.Vertical.prototype.mousemove = function (ev) {
     var paneHeight = this.pane.el.height(),
-	      trackHeight = paneHeight - this.pane.padding * 2,
-  		  pos = ev.pageY - this.startPageY,
-  		  barHeight = this.el.height(),
-  		  innerEl = this.innerEl;
+        trackHeight = paneHeight - this.pane.padding * 2,
+        pos = ev.pageY - this.startPageY,
+        barHeight = this.el.height(),
+        innerEl = this.innerEl;
 
     // minimum top is 0, maximum is the track height
     var y = Math.min(Math.max(pos, 0), trackHeight - barHeight);
 
-    innerEl.scrollTop = (innerEl.scrollHeight - paneHeight)
-      * y / (trackHeight - barHeight);
+    innerEl.scrollTop = (innerEl.scrollHeight - paneHeight) * y / (trackHeight - barHeight);
   };
 
   /**
@@ -432,8 +431,7 @@
 
   Scrollbar.Vertical.prototype.mousewheel = function (ev, delta, x, y) {
     if ((y > 0 && 0 === this.innerEl.scrollTop) ||
-        (y < 0 && (this.innerEl.scrollTop + Math.ceil(this.pane.el.height())
-          === this.innerEl.scrollHeight))) {
+        (y < 0 && (this.innerEl.scrollTop + Math.ceil(this.pane.el.height()) === this.innerEl.scrollHeight))) {
       ev.preventDefault();
       return false;
     }
@@ -447,7 +445,7 @@
    * @api private
    */
 
-  function inherits (ctorA, ctorB) {
+  function inherits(ctorA, ctorB) {
     function f() {}
     f.prototype = ctorB.prototype;
     ctorA.prototype = new f();
@@ -459,12 +457,12 @@
 
   var size;
 
-  function scrollbarSize () {
+  function scrollbarSize() {
     if (size === undefined) {
       var $div = $(
-          '<div class="antiscroll-inner" style="width:50px;height:50px;overflow-y:scroll;'
-        + 'position:absolute;top:-200px;left:-200px;"><div style="height:100px;width:100%"/>'
-        + '</div>'
+          '<div class="antiscroll-inner" style="width:50px;height:50px;overflow-y:scroll;' +
+          'position:absolute;top:-200px;left:-200px;"><div style="height:100px;width:100%"/>' +
+          '</div>'
       );
 
       $('body').append($div);
