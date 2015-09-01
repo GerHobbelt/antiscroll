@@ -29,6 +29,18 @@
    * @param {Element|jQuery} main pane
    * @parma {Object} options
    * @api public
+   *
+   * Supported options:
+   *
+   *   - autoHide           {boolean}  (default: true) auto-hide the scrollbars when mouse moves outside area
+   *   - initialDisplay     {number/boolean}   (default: 3000) number of milliseconds for the initial display period when the scrollbar is created. Set to boolean `false` to display the initial display period entirely.
+   *   - disableHorizontal  {boolean}  do not show a horizontal scroll bar, ever!
+   *   - disableVertical    {boolean}  do not show a vertical scroll bar, ever!
+   *   - forceHorizontal    {boolean}  always show a horizontal scroll bar (this option is overridden by the `disableHorizontal` option though)
+   *   - forceVertical      {boolean}  always show a vertical scroll bar (this option is overridden by the `disableVertical` option though)
+   *   - x                  {boolean}  (default: true) show a horizontal scroll bar (this option is overridden by both the `forceHorizontal` and `disableHorizontal` options though)
+   *   - y                  {boolean}  (default: true) show a vertical scroll bar (this option is overridden by both the `forceVertical` and `disableVertical` options though)
+   *   - padding            {number}   (default: 2) the scrollbar track padding
    */
 
   function Antiscroll(el, opts) {
@@ -59,12 +71,12 @@
    */
 
   Antiscroll.prototype.refresh = function () {
-    var needHScroll = this.options.disableHorizontal !== true &&
+    var needHScroll = !this.options.disableHorizontal &&
                       (
                         this.options.forceHorizontal ||
                         (this.inner.length > 0 ? this.inner.get(0).scrollWidth : 0) > this.el.width() + (this.y ? scrollbarSize() : 0)
-                      )
-      , needVScroll = this.options.disableVertical !== true &&
+                      ),
+        needVScroll = !this.options.disableVertical &&
                       (
                         this.options.forceVertical ||
                         (this.inner.length > 0 ? this.inner.get(0).scrollHeight : 0) > this.el.height() + (this.x ? scrollbarSize() : 0)
