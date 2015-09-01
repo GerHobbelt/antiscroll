@@ -132,6 +132,16 @@
     <script>
 
       $(function () {
+        // for demo purposes: show multiple, nested, scrollable box candidates based on/inside the first.
+        // 
+        // Then show that $.antiscroll picks each one available.
+        var clone = $('.box-wrap');
+
+        clone.clone().appendTo($('.box-inner').filter(':first'));
+        clone.clone().appendTo($('.box-inner').filter(':first'));
+
+        // ------------------------------------------------------------
+
         scroller = $('.box-wrap').antiscroll().data('antiscroll');
 
         $("#addRow").click(function() {                    
