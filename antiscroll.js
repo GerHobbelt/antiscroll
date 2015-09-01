@@ -17,10 +17,11 @@
   };
 
   /**
-   * Expose constructor.
+   * Expose constructor and Scrollbar constructor.
    */
 
   $.Antiscroll = Antiscroll;
+  Antiscroll.Scrollbar = Scrollbar;
 
   /**
    * Antiscroll pane constructor.
@@ -63,7 +64,7 @@
 
     if (this.x) {
       if (!this.horizontal && needHScroll) {
-        this.horizontal = new Scrollbar.Horizontal(this);
+        this.horizontal = new Antiscroll.Scrollbar.Horizontal(this);
       } else if (this.horizontal && !needHScroll)  {
         this.horizontal.destroy();
         this.horizontal = null;
@@ -74,7 +75,7 @@
 
     if (this.y) {
       if (!this.vertical && needVScroll) {
-        this.vertical = new Scrollbar.Vertical(this);
+        this.vertical = new Antiscroll.Scrollbar.Vertical(this);
       } else if (this.vertical && !needVScroll)  {
         this.vertical.destroy();
         this.vertical = null;
