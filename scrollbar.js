@@ -44,7 +44,6 @@
                     .find('.antiscroll-inner')
                     .css({width: 2 * width - inners.width(), height: height + width - inners.width()});
             }
-
         });
     };
 
