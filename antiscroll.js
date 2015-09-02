@@ -35,12 +35,12 @@
    *   - autoHide           {boolean}  (default: true) auto-hide the scrollbars when mouse moves outside area
    *   - initialDisplay     {number/boolean}   (default: 3000) number of milliseconds for the initial display period when the scrollbar is created. Set to boolean `false` to display the initial display period entirely.
    *   - x                  {boolean}  (default: null) set the horizontal scrollbar visibility:
-   *     + `true`: always *show* the scroll bar, i.e. *force* the scrollbar
-   *     + `false`: always *hide* the scroll bar, i.e. *disable* the scrollbar
+   *     + `true`:               always *show* the scroll bar, i.e. *force* the scrollbar
+   *     + `false`:              always *hide* the scroll bar, i.e. *disable* the scrollbar
    *     + `null` / `undefined`: let the system decide, based on the DOM measurements, i.e. set to the scrollbar to *automatic*
    *   - y                  {boolean}  (default: null) set the vertical scrollbar visibility:
-   *     + `true`: always *show* the scroll bar, i.e. *force* the scrollbar
-   *     + `false`: always *hide* the scroll bar, i.e. *disable* the scrollbar
+   *     + `true`:               always *show* the scroll bar, i.e. *force* the scrollbar
+   *     + `false`:              always *hide* the scroll bar, i.e. *disable* the scrollbar
    *     + `null` / `undefined`: let the system decide, based on the DOM measurements, i.e. set to the scrollbar to *automatic*
    *   - padding            {number}   (default: 2) the scrollbar track padding
    */
