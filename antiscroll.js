@@ -11,6 +11,10 @@
         antiscroll.inner.attr('style', '');
         antiscroll.destroy();
       }
+      
+      if (options === 'destroy') {
+        return;
+      }
 
       $(this).data('antiscroll', new $.Antiscroll(this, options));
     });
