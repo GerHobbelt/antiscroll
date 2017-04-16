@@ -54,8 +54,9 @@
   -ms-overflow-style: none;
 }
 
-/** A bug in Chrome 25 on Lion requires each selector to have their own
-    blocks. E.g. the following:
+/** 
+    CSS Standards Compliance requirement:
+    each selector has to have their own blocks. E.g. the following:
 
     .antiscroll-inner::-webkit-scrollbar, .antiscroll-inner::scrollbar {...}
 
